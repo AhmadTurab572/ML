@@ -1,8 +1,14 @@
 import streamlit as st
 import joblib
+import os
 
 # Load the pre-trained model
-model = joblib.load('C:\\Users\\AHMAD TURAB\\Desktop\\svm.pkl')
+model_path = 'C:\\Users\\AHMAD TURAB\\Desktop\\svm.pkl'  # Change this if deploying
+if os.path.exists(model_path):
+    model = joblib.load(model_path)
+else:
+    st.error("Model file not found. Please check the path.")
+    st.stop()
 
 # Set the title of the app
 st.title("SVM Prediction Application")
@@ -19,6 +25,8 @@ gender_encoded = 1 if gender == "Male" else 0
 if st.button("Predict"):
     # Prepare input data for prediction
     input_data = [[gender_encoded, age, estimated_salary]]
+    
+    # Make prediction
     prediction = model.predict(input_data)
 
     # Display the prediction result
